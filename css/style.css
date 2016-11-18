@@ -39,6 +39,9 @@
 		height: 700px;
 		overflow: hidden;
 	}
+	img{
+	    width:100%;
+	}
 
 	ul.slides{
 		margin: 0px;
