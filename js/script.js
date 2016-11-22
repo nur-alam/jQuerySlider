@@ -16,25 +16,21 @@
 	    eachSlideWidth = _gallery.find('li').outerWidth(true);
 		totalWidth = totalSlides*eachSlideWidth;
 	
-		console.log(mainDivWidth);
-		console.log(eachSlideWidth);
-		console.log(totalWidth);
-	
 		_gallery.find('ul').css('width',totalWidth);
 	    _gallery.find('ul>li').css('width',mainDivWidth);
 	
 	
 		/*previous sliding function*/
-		$('.prev_area').click(function(event){
-			event.preventDefault();
+		function prevSliding(e){
+			e.preventDefault();
+
+			$('.prev_area').unbind();
 			
 			/*getting the index of active li element*/
 			index = _gallery.find('.active').index();
 			
 			active = _gallery.find('.active');
 			activeNext = active.prev();
-			console.log(active);
-			console.log(activeNext);
 			
 			/*if active li element is first li then go to last slide*/
 			if(index == 0){
@@ -43,19 +39,31 @@
 				firstActive = _gallery.find('.active').eq(0);
 				firstActive.removeClass('active');
 				_slides.css('margin-left',-(totalWidth-eachSlideWidth));
-				_slides.animate({'margin-left':'+='+mainDivWidth},750,'swing');
+				_slides.animate({'margin-left':'+='+mainDivWidth},750,'swing',function(){
+					$('.prev_area').bind('click', prevSliding);
+				});
 			}else{
 				activeNext.addClass('active');
 				active.removeClass('active');
-				_slides.animate({'margin-left':'+='+mainDivWidth},750,'swing');	
+				_slides.animate({'margin-left':'+='+mainDivWidth},750,'swing',function(){
+					$('.prev_area').bind('click', prevSliding);
+				});	
 			}
-			
-		});	
-	
-	
+		}
+
+
+
 	
 		/* next sliding function*/
-		function nextSlideing(){
+		function nextSlideing(e){
+			e.preventDefault();
+
+			/* 
+				unbind then event that more clicking won't fired
+				after finishing the animation another click event will fired
+				otherwise not fired
+			*/
+			$('.next_area').unbind();
 
 			/* getting the index of active li element*/
 			index = _gallery.find('.active').index();
@@ -73,17 +81,21 @@
 					_gallery.find('ul>li:first').addClass('active');
 					_slides.css('margin-left',0);
 				}
+				/* bind event again after animation finished */
+				$('.next_area').bind('click', nextSlideing);
 			});
 
 		}
 	
-	
-		/* next cliking event*/
-		$(document).on('click','.next_area',function(event){
-			event.preventDefault();
-			nextSlideing();
-		});
-	
+
+
+	    /* prev cliking event */
+		$('.prev_area').bind('click',prevSliding);	
+
+
+	    /* next cliking event */
+		$('.next_area').bind('click',nextSlideing);	
+
 	
 		/*making auto sliding*/
 		/*setInterval(nextSlideing,6000);*/
