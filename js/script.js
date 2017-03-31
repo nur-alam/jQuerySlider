@@ -70,24 +70,28 @@
 
 			active = _gallery.find('.active');
 			activeNext = active.next();
-			if(!(active.next().find('img')).load()){
-				console.log(active.next().find('img').attr('src'));
-				return 0;
-			}
-			//console.log(activeNext.find('.active img').attr('alt'));
-			activeNext.addClass('active');
-			firstActive = _gallery.find('.active').eq(0);
-			firstActive.removeClass('active');
+			(active.next().find('img')).load(function(){
 
-			_slides.animate({'margin-left':'-='+mainDivWidth},750,'swing',function(){
-				/*if active index is last li element then add active class to first li element*/
-				if(index===(totalSlides-2)){
-					_gallery.find('ul>li').removeClass('active');
-					_gallery.find('ul>li:first').addClass('active');
-					_slides.css('margin-left',0);
-				}
-				/* bind event again after animation finished */
-				$('.next_area').bind('click', nextSlideing);
+	/*			if(!(active.next().find('img')).load()){
+					console.log(active.next().find('img').attr('src'));
+					return 0;
+				}*/
+				//console.log(activeNext.find('.active img').attr('alt'));
+				activeNext.addClass('active');
+				firstActive = _gallery.find('.active').eq(0);
+				firstActive.removeClass('active');
+
+				_slides.animate({'margin-left':'-='+mainDivWidth},750,'swing',function(){
+					/*if active index is last li element then add active class to first li element*/
+					if(index===(totalSlides-2)){
+						_gallery.find('ul>li').removeClass('active');
+						_gallery.find('ul>li:first').addClass('active');
+						_slides.css('margin-left',0);
+					}
+					/* bind event again after animation finished */
+					$('.next_area').bind('click', nextSlideing);
+				});
+
 			});
 
 		}
