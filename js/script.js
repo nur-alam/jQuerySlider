@@ -70,6 +70,11 @@
 
 			active = _gallery.find('.active');
 			activeNext = active.next();
+			if(!(active.next().find('img')).load()){
+				console.log(active.next().find('img').attr('src'));
+				return 0;
+			}
+			//console.log(activeNext.find('.active img').attr('alt'));
 			activeNext.addClass('active');
 			firstActive = _gallery.find('.active').eq(0);
 			firstActive.removeClass('active');
